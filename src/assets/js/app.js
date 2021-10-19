@@ -6,78 +6,87 @@ $(document).ready(function () {
   $(document).foundation();
 });
 
-
-
 // DOM OPERATION
 
 const form = document.querySelector("#operationForm");
 form.addEventListener("submit", function (event) {
-  event.preventDefault;
+  event.preventDefault();
 
-  
-  const operator = document.querySelector("#operator");
-  const titre = document.querySelector("#titre");
-  const descr = document.querySelector("#desc");
-  const montant = document.querySelector("#montant");
-  const solde = document.querySelector("#solde");
+  const operator = document.querySelector("#operator").value;
+  const titre = document.querySelector("#titre").value;
+  const descr = document.querySelector("#desc").value;
+  const montant = document.querySelector("#montant").value;
+  const solde = document.querySelector("#solde").value;
 
-  console.log("operator").value;
-  console.log("titre").value;
-  console.log("descr").value;
-  console.log("montant").value;
-  console.log("solde");
+  console.log(operator);
+  console.log(titre);
+  console.log(descr);
+  console.log(montant);
+  console.log(solde);
 
-  document.getElementsByClassName("grid-container").setAttribute("id", "grid");/*pour attribuer l'id grid sans passer par l'html */
-  let grid = document.getElementById("#grid");// grille qui contient toutes les operations
+  let grid = document.querySelector("#grid"); // grille qui contient toutes les operations
 
-  let newDiv = document.createElement("div");// div qui va contenir une operation
+  let newDiv = document.createElement("div"); // div qui va contenir une operation
   newDiv.className = "operation";
   grid.appendChild(newDiv);
 
-  if (operator == credit) {
+  if (operator == "credit") {
     newDiv.className += " credit";
-  }else {
+  } else {
     newDiv.className += " debit";
   }
 
-    let newDivv = document.createElement("div");// div qui va contenir les cases de l' operation
-    newDivv.className = "grid-x grid-padding-x align-middle";
-    newDiv.appendChild(newDivv);
+  let newDivv = document.createElement("div"); // div qui va contenir les cases de l' operation
+  newDivv.className = "grid-x grid-padding-x align-middle";
+  newDiv.appendChild(newDivv);
 
-      let shrink = document.createElement("div");
-      shrink.classname = "cell shrink";
-      newDivv.appendChild(shrink);
+  let shrink = document.createElement("div");
+  shrink.className = "cell shrink";
+  newDivv.appendChild(shrink);
 
-        let picto = document.createElement("div");
-        picto.classname = "picto";
-        shrink.appendChild(picto);
+  let picto = document.createElement("div");
+  picto.className = "picto";
+  shrink.appendChild(picto);
 
-        // if (operator == credit) {
-        //   img credit;
-        // }else {
-        //   img debit;
-        // }
+  let img = document.createElement("img");
+  picto.appendChild(img);
+  if (operator == "credit") {
+    img.src = "./assets/images/sac-dargent.png";
+    img.alt = "credit";
+  } else {
+    img.src = "./assets/images/depenses.png";
+    img.alt = "dedit";
+  }
 
-      let aut = document.createElement("div");
-      aut.classname = "cell auto";
-      newDivv.appendChild(aut);
+  let autoCell = document.createElement("div");
+  autoCell.className = "cell auto";
+  newDivv.appendChild(autoCell);
 
-        let libele = document.createElement("div");
-        libele.id = "libelee";
-        aut.appendChild(libele);
+  let libele = document.createElement("div");
+  libele.id = "libelee";
+  autoCell.appendChild(libele);
 
-          let titi = document.createElement("h2");
-          libele.appendChild(titi);//titre de l'operation
-          titi.innerText = titre.value;
+  let titreOpe = document.createElement("h2");
+  libele.appendChild(titreOpe); //titre de l'operation
+  titreOpe.innerText = titre;
 
-          let sma = document.createElement("small");
-          libele.appendChild(sma);// description de l'operation
-          sma.innerText = descr.value;
+  let descOpe = document.createElement("small");
+  libele.appendChild(descOpe); // description de l'operation
+  descOpe.innerText = descr;
 
-      // let  = document.createElement("div");
-      // shrink.classname = "cell shrink";
-      // newDivv.appendChild(shrink);
+  let smallCell = document.createElement("div");
+  smallCell.className = "cell small-3 text-right";
+  newDivv.appendChild(smallCell);
 
+  let newDivM = document.createElement("div");
+  smallCell.appendChild(newDivM);
 
+  let newP = document.createElement("p");
+  newP.className = "count";
+  newDivM.appendChild(newP);
+  newP.innerText = montant;
 
+  let percent = document.createElement("small");
+  //percent.
+  newDivM.appendChild(percent);
 });
