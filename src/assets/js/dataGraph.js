@@ -1,10 +1,12 @@
 // <block:setup:1>
-const datapoints = [1200, 750, 775, 760, 2560];
-const DATA_COUNT = datapoints.length + 2;
-const labels = [];
+const datapoints = [5000, 0, 2000]; //solde apreschaque opérations
+const DATA_COUNT = datapoints.length + 2; //nombres d'operations dans le graphique
+const labels = [];//voir si on peut rajouter sur le label a part le numero de l'ope
 for (let i = 0; i < DATA_COUNT; ++i) {
   labels.push(i.toString());
 }
+
+
 const data = {
   labels: labels,
   datasets: [
@@ -12,7 +14,7 @@ const data = {
       label: "Compte",
       data: datapoints,
       borderColor: "purple",
-      //   fill: true,
+      // fill: true,
       cubicInterpolationMode: "monotone",
     },
   ],
@@ -32,20 +34,20 @@ const config = {
     responsive: true,
     plugins: {
       legend: false,
-      //   title: {
-      //     display: true,
-      //     text: "Chart.js Line Chart - Cubic interpolation mode",
-      //   },
+      // title: {
+      //   display: true,
+      //   text: "Chart.js Line Chart - Cubic interpolation mode",
+      // },
     },
     interaction: {
       intersect: false,
     },
     scales: {
       x: {
-        display: false,
+        display: true,
       },
       y: {
-        display: false,
+        display: true,
       },
     },
   },
