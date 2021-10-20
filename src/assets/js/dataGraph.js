@@ -1,11 +1,10 @@
 // <block:setup:1>
-const datapoints = [5000, 0, 2000]; //solde apreschaque opérations
+const datapoints = [0, 1000, 200, 23]; //solde apreschaque opérations
 const DATA_COUNT = datapoints.length + 2; //nombres d'operations dans le graphique
-const labels = [];//voir si on peut rajouter sur le label a part le numero de l'ope
+const labels = []; //voir si on peut rajouter sur le label a part le numero de l'ope
 for (let i = 0; i < DATA_COUNT; ++i) {
   labels.push(i.toString());
 }
-
 
 const data = {
   labels: labels,
@@ -42,7 +41,7 @@ const config = {
     interaction: {
       intersect: false,
     },
-    scales: {
+    scales: {// fait apparaitre une grille dans le graphique
       x: {
         display: true,
       },

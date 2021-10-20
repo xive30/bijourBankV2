@@ -5,8 +5,7 @@ console.log("Bijour Bank !");
 $(document).ready(function () {
   $(document).foundation();
 });
-
-// DOM OPERATION
+const solde = [20, -20]; // le solde doit contenir la liste des montants positifs et negatifs
 
 const form = document.querySelector("#operationForm");
 form.addEventListener("submit", function (event) {
@@ -16,13 +15,14 @@ form.addEventListener("submit", function (event) {
   const titre = document.querySelector("#titre").value;
   const descr = document.querySelector("#desc").value;
   const montant = document.querySelector("#montant").value;
-  const solde = document.querySelector("#solde").value;
 
-  console.log(operator);
-  console.log(titre);
-  console.log(descr);
-  console.log(montant);
-  console.log(solde);
+  // let percent =parseFloat
+
+  // console.log(operator);
+  // console.log(titre);
+  // console.log(descr);
+  // console.log(montant);
+  console.log(solde.values);
 
   let grid = document.querySelector("#grid"); // grille qui contient toutes les operations
 
@@ -53,7 +53,7 @@ form.addEventListener("submit", function (event) {
   if (operator == "credit") {
     img.src = "./assets/images/sac-dargent.png";
     img.alt = "credit";
-  } else {
+  } else if (operator == "debit") {
     img.src = "./assets/images/depenses.png";
     img.alt = "dedit";
   }
@@ -84,9 +84,18 @@ form.addEventListener("submit", function (event) {
   let newP = document.createElement("p");
   newP.className = "count";
   newDivM.appendChild(newP);
-  newP.innerText = montant;
+  newP.innerText = `${montant} €`;
 
   let percent = document.createElement("small");
-  //percent.
+  //pourcentage  si il n'y a pas de montant précédent = 100%
   newDivM.appendChild(percent);
+
+  if (operator == "credit") {
+    solde.push(montant);
+  } else {
+    solde.push("-" + montant);
+  }
+  console.log("mon tableau solde :", solde);
+  // console.log("solde valeur", reduce.solde());
 });
+console.log("mon tableau solde :", solde);
