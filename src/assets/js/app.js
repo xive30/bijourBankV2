@@ -5,7 +5,8 @@ console.log("Bijour Bank !");
 $(document).ready(function () {
   $(document).foundation();
 });
-const solde = [20, -20]; // le solde doit contenir la liste des montants positifs et negatifs
+const montants = [0]; // le solde doit contenir la liste des montants positifs et negatifs
+let solde = 0;
 
 const form = document.querySelector("#operationForm");
 form.addEventListener("submit", function (event) {
@@ -22,7 +23,7 @@ form.addEventListener("submit", function (event) {
   // console.log(titre);
   // console.log(descr);
   // console.log(montant);
-  console.log(solde.values);
+  console.log(montants.values);
 
   let grid = document.querySelector("#grid"); // grille qui contient toutes les operations
 
@@ -91,11 +92,19 @@ form.addEventListener("submit", function (event) {
   newDivM.appendChild(percent);
 
   if (operator == "credit") {
-    solde.push(montant);
+    montants.push(montant);
   } else {
-    solde.push("-" + montant);
+    montants.push("-" + montant);
   }
-  console.log("mon tableau solde :", solde);
-  // console.log("solde valeur", reduce.solde());
+  console.log("mon tableau monants :", solde);
+
+// array.forEach(element => {
+  
+// });
+
+for (let index = 0; index < montants.length; index++) {
+  solde =+ montants[index];
+  document.querySelector("#solde").innerText = solde;
+}
 });
-console.log("mon tableau solde :", solde);
+console.log("mon tableau montants :", montants);
