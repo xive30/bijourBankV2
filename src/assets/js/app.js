@@ -5,7 +5,7 @@ console.log("Bijour Bank !");
 $(document).ready(function () {
   $(document).foundation();
 });
-const solde = [20, -20]; // le solde doit contenir la liste des montants positifs et negatifs
+const solde = []; // le solde doit contenir la liste des montants positifs et negatifs
 
 const form = document.querySelector("#operationForm");
 form.addEventListener("submit", function (event) {
@@ -91,11 +91,12 @@ form.addEventListener("submit", function (event) {
   newDivM.appendChild(percent);
 
   if (operator == "credit") {
-    solde.push(montant);
+    solde.push(parseFloat(montant)); // j'ai choisi parsefloat parce qu'on devra utiliser des montants avec des chiffres apres la virgule plus tard
   } else {
-    solde.push("-" + montant);
+    solde.push(parseFloat("-" + montant));
   }
   console.log("mon tableau solde :", solde);
-  // console.log("solde valeur", reduce.solde());
+  const reducer = (previousValue, currentValue) => previousValue + currentValue;//ne marche pas si il n'y a qu'une valeur
+  document.querySelector("#solde") = solde.reduce(reducer);
 });
 console.log("mon tableau solde :", solde);
