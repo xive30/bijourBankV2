@@ -23,7 +23,6 @@ form.addEventListener("submit", function (event) {
   // console.log(titre);
   // console.log(descr);
   // console.log(montant);
-  console.log(montants.values);
 
   let grid = document.querySelector("#grid"); // grille qui contient toutes les operations
 
@@ -88,23 +87,25 @@ form.addEventListener("submit", function (event) {
   newP.innerText = `${montant} €`;
 
   let percent = document.createElement("small");
-  //pourcentage  si il n'y a pas de montant précédent = 100%
+  if (solde == 0) {         //pourcentage  si il n'y a pas de montant précédent = 100%
+    percent.innerText = "100%";
+  } else {
+  percent.innerText =Math.round(montant* 10000 / solde) / 100  + "%";
+  /*montant *100/ solde pour avoir le pourcentage de mon nouveau montant par rapport à mon ancien solde 
+  le nouveau solde etant implemanté juste après
+  math.round pour avoir un chiffre arrondi et *100 /100 pour l'avoir 2 chiffres après la virgule */
+  }
   newDivM.appendChild(percent);
 
+  //définir le solde : pour l'instant je ne sais pas si le tableau montants sert a quelque chose
   if (operator == "credit") {
-    montants.push(montant);
+    montants.push(parseFloat(montant));
+    solde+= parseFloat(montant)
   } else {
-    montants.push("-" + montant);
+    montants.push(parseFloat("-" + montant));
+    solde -= parseFloat(montant)
   }
-  console.log("mon tableau monants :", solde);
+document.querySelector("#solde").innerText = solde;
 
-// array.forEach(element => {
-  
-// });
-
-for (let index = 0; index < montants.length; index++) {
-  solde =+ montants[index];
-  document.querySelector("#solde").innerText = solde;
-}
+//pour avoir le pourcentage
 });
-console.log("mon tableau montants :", montants);

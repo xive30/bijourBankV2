@@ -1,5 +1,5 @@
 // <block:setup:1>
-const datapoints = [0, 1000, 200, 23]; //solde apreschaque opérations
+const datapoints = [0,]; //solde apres chaque opérations
 const DATA_COUNT = datapoints.length + 2; //nombres d'operations dans le graphique
 const labels = []; //voir si on peut rajouter sur le label a part le numero de l'ope
 for (let i = 0; i < DATA_COUNT; ++i) {
@@ -47,6 +47,7 @@ const config = {
       },
       y: {
         display: true,
+        //je veux implémenter une valeur minimale à 1 pour garder le solde 0 nulle est invisible
       },
     },
   },
