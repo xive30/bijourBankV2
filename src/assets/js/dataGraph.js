@@ -44,11 +44,12 @@ const config = {
     scales: {// fait apparaitre une grille dans le graphique
       x: {
         display: true,
+        min: 1,
+        // j'implémente une valeur minimale à 1 pour garder le solde 0 nulle et invisible
       },
       y: {
         display: true,
-        //je veux implémenter une valeur minimale à 1 pour garder le solde 0 nulle est invisible
-      },
+      }, 
     },
   },
 };
