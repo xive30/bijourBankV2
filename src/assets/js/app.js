@@ -10,15 +10,23 @@ let solde = 0;
 const soldes = [0];// le tableau des constantes soldes pour le graphique
 const form = document.querySelector("#operationForm");
 let msg = document.querySelector("#msg");
+const operations = [];
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const operator = document.querySelector("#operator").value;
-  const titre = document.querySelector("#titre").value;
-  const descr = document.querySelector("#desc").value;
-  const montant = document.querySelector("#montant").value;
+  const operation  = {
+    operator : operator = document.querySelector("#operator").value,
+    titre : titre = document.querySelector("#titre").value,
+    descr : descr = document.querySelector("#desc").value,
+    montant : montant = document.querySelector("#montant").value
+  }
 
+  operations.push(operation);
+/******************enregistrement des opeartions dans localStorage ****************************/
+  localStorage.setItem("opes", JSON.stringify(operations));
+
+  const pastOpes = JSON.parse(localStorage.getItem("opes"));
   /*************************la grille qui contient toutes les operations *************************/
   let grid = document.querySelector("#grid");
 
