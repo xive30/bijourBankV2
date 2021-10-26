@@ -68,16 +68,16 @@
           <div class="cell">
             <div class="text-center">
               <h1 id="solde" class="solde">0</h1>
-              <small class="good">on est trés trés bien 😃</small>
-              <canvas id="myChart" width="400" height="100"></canvas>
+              <marquee behavior="scroll" direction="right"><small class="good" id="msg"></small></marquee>
+              <canvas id="myChart" width="400" height="50"></canvas><!--a remettre a 100-->
             </div>
           </div>
           <div class="cell">
             <div>
               <nav class="navHeader">
-                <a href="#" class="active">Tout</a>
-                <a href="#">Crédit</a>
-                <a href="#">Débit</a>
+                <a href="#" id="btt" class="active">Tout</a>
+                <a href="#" id="btc">Crédit</a>
+                <a href="#" id="btd">Débit</a>
               </nav>
             </div>
           </div>
@@ -85,118 +85,7 @@
       </div>
     </header>
     <main>
-      <div class="grid-container" id="grid">
-        <!-- operation -->
-        <!-- <div class="operation credit">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink">
-              <div class="picto">
-                <img src="./assets/images/sac-dargent.png" alt="credit" />
-              </div>
-            </div>
-            <div class="cell auto">
-              <div>
-                <h2>Salaire</h2>
-                <small>mois de septembre</small>
-              </div>
-            </div>
-            <div class="cell small-3 text-right">
-              <div>
-                <p class="count">1 200€</p>
-                <small>100%</small>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- operation -->
-        <!-- <div class="operation debit">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink">
-              <div class="picto">
-                <img src="./assets/images/depenses.png" alt="dedit" />
-              </div>
-            </div>
-            <div class="cell auto">
-              <div>
-                <h2>Loyer</h2>
-                <small>mois d'aoüt</small>
-              </div>
-            </div>
-            <div class="cell small-3 text-right">
-              <div>
-                <p class="count">450€</p>
-                <small>37.5%</small>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- operation -->
-        <!-- <div class="operation credit">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink">
-              <div class="picto">
-                <img src="./assets/images/sac-dargent.png" alt="credit" />
-              </div>
-            </div>
-            <div class="cell auto">
-              <div>
-                <h2>Vente Boncoin</h2>
-                <small>jeu PS5</small>
-              </div>
-            </div>
-            <div class="cell small-3 text-right">
-              <div>
-                <p class="count">25€</p>
-                <small>3.33%</small>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- operation -->
-        <!-- <div class="operation debit">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink">
-              <div class="picto">
-                <img src="./assets/images/depenses.png" alt="dedit" />
-              </div>
-            </div>
-            <div class="cell auto">
-              <div>
-                <h2>Restaurant</h2>
-                <small>mc do</small>
-              </div>
-            </div>
-            <div class="cell small-3 text-right">
-              <div>
-                <p class="count">15€</p>
-                <small>1.9%</small>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- operation -->
-        <!-- <div class="operation credit">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink">
-              <div class="picto">
-                <img src="./assets/images/sac-dargent.png" alt="credit" />
-              </div>
-            </div>
-            <div class="cell auto">
-              <div>
-                <h2>Réalisation de site web</h2>
-                <small>ma mairie</small>
-              </div>
-            </div>
-            <div class="cell small-3 text-right">
-              <div>
-                <p class="count">1 800€</p>
-                <small>236.84%</small>
-              </div>
-            </div>
-          </div>
-        </div> -->
-      </div>
+      <div class="grid-container" id="grid"></div>
     </main>
 
     <div class="add">
@@ -204,6 +93,6 @@
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="./assets/js/dataGraph.js"></script>
   <script src="./assets/js/app.js"></script>
+  <script src="./assets/js/dataGraph.js"></script>
 </html>

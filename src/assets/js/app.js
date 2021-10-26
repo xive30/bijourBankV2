@@ -5,38 +5,80 @@ console.log("Bijour Bank !");
 $(document).ready(function () {
   $(document).foundation();
 });
-const solde = []; // le solde doit contenir la liste des montants positifs et negatifs
 
+let solde = 0;
+const soldes = [0]; // le tableau des constantes soldes pour le graphique
 const form = document.querySelector("#operationForm");
+let msg = document.querySelector("#msg");
+const operations = [];
+
 form.addEventListener("submit", function (event) {
   event.preventDefault();
+  
+  const operation = {
+    operator: (operator = document.querySelector("#operator").value),
+    titre: (titre = document.querySelector("#titre").value),
+    descr: (descr = document.querySelector("#desc").value),
+    montant: (montant = document.querySelector("#montant").value),
+  };
+  
+  operations.push(operation);
+  structureOperation(operations);
+});
 
-  const operator = document.querySelector("#operator").value;
-  const titre = document.querySelector("#titre").value;
-  const descr = document.querySelector("#desc").value;
-  const montant = document.querySelector("#montant").value;
+  /******************enregistrement des opeartions dans localStorage ****************************/
 
-  // let percent =parseFloat
+  // Declaration de la variable "operationsEnregistreDansLocaStorage" dans laquelle on met les key et les values qui sont dans localStorage
+  let operationsEnregistreDansLocaStorage = JSON.parse(
+    localStorage.getItem("opes")
+  );
 
-  // console.log(operator);
-  // console.log(titre);
-  // console.log(descr);
-  // console.log(montant);
-  console.log(solde.values);
+  // Fonction ajoutée une opération dans localStorage
+  const ajoutOperationLocalStorage = () => {
+    operationsEnregistreDansLocaStorage.push(operation);
+    //la transformation au format JSON et l'envoyer dans la key opes du localStorage
+    localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
+  };
+  
+  // JSON.parse c'est pour convertir les données qui sont au format JSON dans le localStorage en objet javasript
+  // si il y a des operations dans localStorage
+  if (operationsEnregistreDansLocaStorage) {
+    ajoutOperationLocalStorage();
+  }
+  //si il n'ya pas d'operation dans localStorage
+  else {
+    operationsEnregistreDansLocaStorage = [];
+    ajoutOperationLocalStorage();
+  }
+  /***********affichage des opes localStorage ********************************************/
 
-  let grid = document.querySelector("#grid"); // grille qui contient toutes les operations
-
-  let newDiv = document.createElement("div"); // div qui va contenir une operation
+  for(index =0; index <  operationsEnregistreDansLocaStorage.length; index ++) {
+    /* 
+    
+    je dois lire chaque opes dans
+    
+    structureOperation();
+    
+    
+    
+    */
+  }
+function structureOperation(operations) {
+  
+  /*************************la grille qui contient toutes les operations *************************/
+  let grid = document.querySelector("#grid");
+  
+  /*************************creation d'une div pour chaque operation ****************************/
+  let newDiv = document.createElement("div");
   newDiv.className = "operation";
   grid.appendChild(newDiv);
-
   if (operator == "credit") {
     newDiv.className += " credit";
   } else {
     newDiv.className += " debit";
   }
-
-  let newDivv = document.createElement("div"); // div qui va contenir les cases de l' operation
+  
+  let newDivv = document.createElement("div");
   newDivv.className = "grid-x grid-padding-x align-middle";
   newDiv.appendChild(newDivv);
 
@@ -47,9 +89,10 @@ form.addEventListener("submit", function (event) {
   let picto = document.createElement("div");
   picto.className = "picto";
   shrink.appendChild(picto);
-
+  
   let img = document.createElement("img");
   picto.appendChild(img);
+  // image selon debit credit
   if (operator == "credit") {
     img.src = "./assets/images/sac-dargent.png";
     img.alt = "credit";
@@ -57,46 +100,117 @@ form.addEventListener("submit", function (event) {
     img.src = "./assets/images/depenses.png";
     img.alt = "dedit";
   }
-
+  
   let autoCell = document.createElement("div");
   autoCell.className = "cell auto";
   newDivv.appendChild(autoCell);
-
+  
   let libele = document.createElement("div");
   libele.id = "libelee";
   autoCell.appendChild(libele);
-
+  
   let titreOpe = document.createElement("h2");
-  libele.appendChild(titreOpe); //titre de l'operation
-  titreOpe.innerText = titre;
-
+  libele.appendChild(titreOpe);
+  titreOpe.innerText = titre; //titre de l'operation
+  
   let descOpe = document.createElement("small");
-  libele.appendChild(descOpe); // description de l'operation
-  descOpe.innerText = descr;
-
+  libele.appendChild(descOpe);
+  // descOpe.innerText = descr; // description de l'operation
+  
   let smallCell = document.createElement("div");
   smallCell.className = "cell small-3 text-right";
   newDivv.appendChild(smallCell);
-
+  
   let newDivM = document.createElement("div");
   smallCell.appendChild(newDivM);
-
+  
   let newP = document.createElement("p");
   newP.className = "count";
   newDivM.appendChild(newP);
-  newP.innerText = `${montant} €`;
-
-  let percent = document.createElement("small");
-  //pourcentage  si il n'y a pas de montant précédent = 100%
+  newP.innerText = `${montant} €`; //montant de l'operation
+  
+  let percent = document.createElement("small"); // element pourcentage de l'operation par rapport au solde
   newDivM.appendChild(percent);
-
-  if (operator == "credit") {
-    solde.push(parseFloat(montant)); // j'ai choisi parsefloat parce qu'on devra utiliser des montants avec des chiffres apres la virgule plus tard
+  
+  /**************************************les pourcentages******************************************/
+  /*montant *100/ solde pour avoir le pourcentage de mon nouveau montant par rapport à mon ancien solde 
+  le nouveau solde etant implemanté juste après
+  math.round pour avoir un chiffre arrondi et *100 /100 pour l'avoir 2 chiffres après la virgule */
+  if (solde == 0) {
+    percent.innerText = "100%";
   } else {
-    solde.push(parseFloat("-" + montant));
+    percent.innerText = Math.round((montant * 10000) / solde) / 100 + "%";
   }
-  console.log("mon tableau solde :", solde);
-  const reducer = (previousValue, currentValue) => previousValue + currentValue;//ne marche pas si il n'y a qu'une valeur
-  document.querySelector("#solde") = solde.reduce(reducer);
+  
+  /************************************définir le dernier solde***********************************/
+  if (operator == "credit") {
+    solde += parseFloat(montant);
+  } else {
+    solde -= parseFloat(montant);
+  }
+  document.querySelector("#solde").innerText = solde;
+  
+  /*******************************message du solde*************************************************/
+  if (solde > 0) {
+    msg.setAttribute("class", "good");
+    if (solde < 1000) {
+      msg.innerText = "c'est juste là!✋";
+    } else if ((solde >= 1000) & (solde < 10000)) {
+      msg.innerText = "on est bien 😃";
+    } else {
+      msg.innerText = "on est vraiment trés bien là !🍻";
+    }
+  } else {
+    msg.setAttribute("class", "bad");
+    msg.innerText = "Attention ca va piquer!!! 😈";
+  }
+  
+  /************************************la liste des soldes******************************************/
+  soldes.push(solde);
+}
+
+  /*********************************la barre de navigation Tout debit credit*************************/
+  /*quand on click sur le lien Credit les divs Debit hidden true, les divs Credit hidden false;
+quand on click sur le lien Debit les divs Credit hidden true, les divs Dedit hidden false;
+quand on click sur le lien tous tous les divs Debit hidden false;*/
+let btt = document.querySelector("#btt");
+let btc = document.querySelector("#btc");
+let btd = document.querySelector("#btd");
+let opdebit = document.getElementsByClassName("debit");
+let opcredit = document.getElementsByClassName("credit");
+
+btt.addEventListener("click", function () /*toutes les operations */ {
+  btt.setAttribute("class", "active");
+  btc.setAttribute("class", "inactive");
+  btd.setAttribute("class", "inactive");
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "block";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "block";
+  }
 });
-console.log("mon tableau solde :", solde);
+
+btc.addEventListener("click", function () /*Les operations credit*/ {
+  btt.setAttribute("class", "inactive");
+  btc.setAttribute("class", "active");
+  btd.setAttribute("class", "inactive");
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "none";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "block";
+  }
+});
+
+btd.addEventListener("click", function () /*Les operations debit */ {
+  btt.setAttribute("class", "inactive");
+  btc.setAttribute("class", "inactive");
+  btd.setAttribute("class", "active");
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "block";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "none";
+  }
+});

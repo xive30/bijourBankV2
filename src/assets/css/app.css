@@ -37,6 +37,9 @@ header {
   margin: 0;
   font-weight: 800;
 }
+marquee{
+  width: 30%;
+}
 .good {
   color: green;
 }
