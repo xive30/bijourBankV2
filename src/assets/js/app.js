@@ -7,29 +7,67 @@ $(document).ready(function () {
 });
 
 let solde = 0;
-const soldes = [0];// le tableau des constantes soldes pour le graphique
+const soldes = [0]; // le tableau des constantes soldes pour le graphique
 const form = document.querySelector("#operationForm");
 let msg = document.querySelector("#msg");
 const operations = [];
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
-
-  const operation  = {
-    operator : operator = document.querySelector("#operator").value,
-    titre : titre = document.querySelector("#titre").value,
-    descr : descr = document.querySelector("#desc").value,
-    montant : montant = document.querySelector("#montant").value
-  }
-
+  
+  const operation = {
+    operator: (operator = document.querySelector("#operator").value),
+    titre: (titre = document.querySelector("#titre").value),
+    descr: (descr = document.querySelector("#desc").value),
+    montant: (montant = document.querySelector("#montant").value),
+  };
+  
   operations.push(operation);
-/******************enregistrement des opeartions dans localStorage ****************************/
-  localStorage.setItem("opes", JSON.stringify(operations));
+  structureOperation(operations);
+});
 
-  const pastOpes = JSON.parse(localStorage.getItem("opes"));
+  /******************enregistrement des opeartions dans localStorage ****************************/
+
+  // Declaration de la variable "operationsEnregistreDansLocaStorage" dans laquelle on met les key et les values qui sont dans localStorage
+  let operationsEnregistreDansLocaStorage = JSON.parse(
+    localStorage.getItem("opes")
+  );
+
+  // Fonction ajoutée une opération dans localStorage
+  const ajoutOperationLocalStorage = () => {
+    operationsEnregistreDansLocaStorage.push(operation);
+    //la transformation au format JSON et l'envoyer dans la key opes du localStorage
+    localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
+  };
+  
+  // JSON.parse c'est pour convertir les données qui sont au format JSON dans le localStorage en objet javasript
+  // si il y a des operations dans localStorage
+  if (operationsEnregistreDansLocaStorage) {
+    ajoutOperationLocalStorage();
+  }
+  //si il n'ya pas d'operation dans localStorage
+  else {
+    operationsEnregistreDansLocaStorage = [];
+    ajoutOperationLocalStorage();
+  }
+  /***********affichage des opes localStorage ********************************************/
+
+  for(index =0; index <  operationsEnregistreDansLocaStorage.length; index ++) {
+    /* 
+    
+    je dois lire chaque opes dans
+    
+    structureOperation();
+    
+    
+    
+    */
+  }
+function structureOperation(operations) {
+  
   /*************************la grille qui contient toutes les operations *************************/
   let grid = document.querySelector("#grid");
-
+  
   /*************************creation d'une div pour chaque operation ****************************/
   let newDiv = document.createElement("div");
   newDiv.className = "operation";
@@ -40,18 +78,18 @@ form.addEventListener("submit", function (event) {
     newDiv.className += " debit";
   }
   
-  let newDivv = document.createElement("div"); 
+  let newDivv = document.createElement("div");
   newDivv.className = "grid-x grid-padding-x align-middle";
   newDiv.appendChild(newDivv);
-  
+
   let shrink = document.createElement("div");
   shrink.className = "cell shrink";
   newDivv.appendChild(shrink);
-  
+
   let picto = document.createElement("div");
   picto.className = "picto";
   shrink.appendChild(picto);
-
+  
   let img = document.createElement("img");
   picto.appendChild(img);
   // image selon debit credit
@@ -62,23 +100,23 @@ form.addEventListener("submit", function (event) {
     img.src = "./assets/images/depenses.png";
     img.alt = "dedit";
   }
-
+  
   let autoCell = document.createElement("div");
   autoCell.className = "cell auto";
   newDivv.appendChild(autoCell);
-
+  
   let libele = document.createElement("div");
   libele.id = "libelee";
   autoCell.appendChild(libele);
-
+  
   let titreOpe = document.createElement("h2");
   libele.appendChild(titreOpe);
   titreOpe.innerText = titre; //titre de l'operation
-
+  
   let descOpe = document.createElement("small");
   libele.appendChild(descOpe);
-  descOpe.innerText = descr; // description de l'operation
-
+  // descOpe.innerText = descr; // description de l'operation
+  
   let smallCell = document.createElement("div");
   smallCell.className = "cell small-3 text-right";
   newDivv.appendChild(smallCell);
@@ -90,7 +128,7 @@ form.addEventListener("submit", function (event) {
   newP.className = "count";
   newDivM.appendChild(newP);
   newP.innerText = `${montant} €`; //montant de l'operation
-
+  
   let percent = document.createElement("small"); // element pourcentage de l'operation par rapport au solde
   newDivM.appendChild(percent);
   
@@ -101,12 +139,12 @@ form.addEventListener("submit", function (event) {
   if (solde == 0) {
     percent.innerText = "100%";
   } else {
-    percent.innerText =Math.round(montant* 10000 / solde) / 100  + "%";
+    percent.innerText = Math.round((montant * 10000) / solde) / 100 + "%";
   }
   
   /************************************définir le dernier solde***********************************/
   if (operator == "credit") {
-    solde+= parseFloat(montant);
+    solde += parseFloat(montant);
   } else {
     solde -= parseFloat(montant);
   }
@@ -114,27 +152,25 @@ form.addEventListener("submit", function (event) {
   
   /*******************************message du solde*************************************************/
   if (solde > 0) {
-    msg.setAttribute('class', 'good');
+    msg.setAttribute("class", "good");
     if (solde < 1000) {
-    msg.innerText = "c'est juste là!✋";
-  }else if (solde >= 1000 & solde < 10000 ){
-    msg.innerText = "on est bien 😃";
-  }else {
-    msg.innerText = "on est vraiment trés bien là !🍻";
+      msg.innerText = "c'est juste là!✋";
+    } else if ((solde >= 1000) & (solde < 10000)) {
+      msg.innerText = "on est bien 😃";
+    } else {
+      msg.innerText = "on est vraiment trés bien là !🍻";
+    }
+  } else {
+    msg.setAttribute("class", "bad");
+    msg.innerText = "Attention ca va piquer!!! 😈";
   }
-} else {
-  msg.setAttribute('class', 'bad');
-  msg.innerText = "Attention ca va piquer!!! 😈";
+  
+  /************************************la liste des soldes******************************************/
+  soldes.push(solde);
 }
 
-/************************************la liste des soldes******************************************/
-soldes.push(solde);
-//je dois sauvegarder ma liste soldes en mémoire tampon pour qu'il puisse être utilisé dans le fichier graphic.js
-
-//je dois également sauvegarder la grille "grid" dans la memoire tampon pour garder mes divs crées quand je ferme le navigateur
-
-/*********************************la barre de navigation Tout debit credit*************************/
-/*quand on click sur le lien Credit les divs Debit hidden true, les divs Credit hidden false;
+  /*********************************la barre de navigation Tout debit credit*************************/
+  /*quand on click sur le lien Credit les divs Debit hidden true, les divs Credit hidden false;
 quand on click sur le lien Debit les divs Credit hidden true, les divs Dedit hidden false;
 quand on click sur le lien tous tous les divs Debit hidden false;*/
 let btt = document.querySelector("#btt");
@@ -143,42 +179,38 @@ let btd = document.querySelector("#btd");
 let opdebit = document.getElementsByClassName("debit");
 let opcredit = document.getElementsByClassName("credit");
 
-btt.addEventListener("click", function() /*toutes les operations */
-{
+btt.addEventListener("click", function () /*toutes les operations */ {
   btt.setAttribute("class", "active");
   btc.setAttribute("class", "inactive");
   btd.setAttribute("class", "inactive");
-  for(let i = 0; i < opdebit.length; i++){
-    opdebit[i].style.display ="block";
-    }
-  for(let i = 0; i < opcredit.length; i++){
-    opcredit[i].style.display ="block";
-    }  
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "block";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "block";
+  }
 });
 
-btc.addEventListener("click", function() /*Les operations credit*/
-{
+btc.addEventListener("click", function () /*Les operations credit*/ {
   btt.setAttribute("class", "inactive");
   btc.setAttribute("class", "active");
   btd.setAttribute("class", "inactive");
-  for(let i = 0; i < opdebit.length; i++){
-    opdebit[i].style.display ="none";
-    }
-  for(let i = 0; i < opcredit.length; i++){
-    opcredit[i].style.display ="block";
-    }  
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "none";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "block";
+  }
 });
 
-btd.addEventListener("click", function() /*Les operations debit */
-{
+btd.addEventListener("click", function () /*Les operations debit */ {
   btt.setAttribute("class", "inactive");
   btc.setAttribute("class", "inactive");
   btd.setAttribute("class", "active");
-  for(let i = 0; i < opdebit.length; i++){
-    opdebit[i].style.display ="block";
-    }
-  for(let i = 0; i < opcredit.length; i++){
-    opcredit[i].style.display ="none";
-    }  
-});
+  for (let i = 0; i < opdebit.length; i++) {
+    opdebit[i].style.display = "block";
+  }
+  for (let i = 0; i < opcredit.length; i++) {
+    opcredit[i].style.display = "none";
+  }
 });
