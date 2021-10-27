@@ -6,15 +6,21 @@ $(document).ready(function () {
   $(document).foundation();
 });
 
+/*************************La déclaration de variables *******************************************/
 let solde = 0;
 const soldes = [0]; // le tableau des constantes soldes pour le graphique
 const form = document.querySelector("#operationForm");
 let msg = document.querySelector("#msg");
 const operations = [];
 
+
+/************************************************************************************************
+ ******** déclaration de la fonction qui recuper et stocke les données de mon formulaire ********
+ ************************************************************************************************/
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   
+  //tableau d'opération qui collecte lesdonnées de chaque opération
   const operation = {
     operator: (operator = document.querySelector("#operator").value),
     titre: (titre = document.querySelector("#titre").value),
@@ -22,17 +28,18 @@ form.addEventListener("submit", function (event) {
     montant: (montant = document.querySelector("#montant").value),
   };
   
+  // le tableau operation est envoyé dans le tableau des oprérations
   operations.push(operation);
+  // j'appelle la fonction structureOperation qui va traiter les données des opérations 
   structureOperation(operations);
-});
 
   /******************enregistrement des opeartions dans localStorage ****************************/
-
+  
   // Declaration de la variable "operationsEnregistreDansLocaStorage" dans laquelle on met les key et les values qui sont dans localStorage
   let operationsEnregistreDansLocaStorage = JSON.parse(
     localStorage.getItem("opes")
-  );
-
+    );
+  
   // Fonction ajoutée une opération dans localStorage
   const ajoutOperationLocalStorage = () => {
     operationsEnregistreDansLocaStorage.push(operation);
@@ -40,7 +47,6 @@ form.addEventListener("submit", function (event) {
     localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
   };
   
-  // JSON.parse c'est pour convertir les données qui sont au format JSON dans le localStorage en objet javasript
   // si il y a des operations dans localStorage
   if (operationsEnregistreDansLocaStorage) {
     ajoutOperationLocalStorage();
@@ -50,22 +56,20 @@ form.addEventListener("submit", function (event) {
     operationsEnregistreDansLocaStorage = [];
     ajoutOperationLocalStorage();
   }
-  /***********affichage des opes localStorage ********************************************/
+  
+});
 
-  for(index =0; index <  operationsEnregistreDansLocaStorage.length; index ++) {
-    /* 
-    
-    je dois lire chaque opes dans
-    
-    structureOperation();
-    
-    
-    
-    */
-  }
+  /***********affichage des opes localStorage ********************************************/
+  // for(index = 0; index <  operationsEnregistreDansLocaStorage.length; index ++) {
+  //   /* je dois lire chaque opes dans structureOperation(); */
+  // }
+
+  /***********************************************************************************************
+   **************** fonction qui va traiter les données des opérations ***************************
+   **********************************************************************************************/
 function structureOperation(operations) {
   
-  /*************************la grille qui contient toutes les operations *************************/
+  //la grille qui contient toutes les operations
   let grid = document.querySelector("#grid");
   
   /*************************creation d'une div pour chaque operation ****************************/
@@ -115,7 +119,7 @@ function structureOperation(operations) {
   
   let descOpe = document.createElement("small");
   libele.appendChild(descOpe);
-  // descOpe.innerText = descr; // description de l'operation
+  descOpe.innerText = descr; // description de l'operation
   
   let smallCell = document.createElement("div");
   smallCell.className = "cell small-3 text-right";
@@ -169,7 +173,10 @@ function structureOperation(operations) {
   soldes.push(solde);
 }
 
-  /*********************************la barre de navigation Tout debit credit*************************/
+  /************************************************************************************************
+  ******************* la barre de navigation Tout Debit Credit*************************************
+  *************************************************************************************************/
+
   /*quand on click sur le lien Credit les divs Debit hidden true, les divs Credit hidden false;
 quand on click sur le lien Debit les divs Credit hidden true, les divs Dedit hidden false;
 quand on click sur le lien tous tous les divs Debit hidden false;*/
