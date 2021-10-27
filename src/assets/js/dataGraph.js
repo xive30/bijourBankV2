@@ -1,17 +1,10 @@
 // <block:setup:1>
-const datapoints = [0]; //solde apres chaque opérations
-let DATA_COUNT = datapoints.length; //nombres d'operations dans le graphique
+const datapoints = soldes; //solde apres chaque opérations
+let DATA_COUNT = datapoints.length +2; //nombres d'operations dans le graphique
 const labels = []; //voir si on peut rajouter sur le label a part le numero de l'ope
 
-form.addEventListener("submit", function (event) {
-  //console.log(solde);
-  datapoints.push(solde);
-  DATA_COUNT = datapoints.length;
-  //console.log(DATA_COUNT);
-});
-
 for (let i = 0; i < DATA_COUNT; ++i) {
-  labels.push(i.toString());
+  labels.push(DATA_COUNT.toString());
 }
 
 const data = {
@@ -52,12 +45,12 @@ const config = {
     scales: {
       // fait apparaitre une grille dans le graphique
       x: {
-        display: true,
-        min: 1,
+        display: false,
+        //min: 1,
         // j'implémente une valeur minimale à 1 pour garder le solde 0 nulle et invisible
       },
       y: {
-        display: true,
+        display: false,
       },
     },
   },
@@ -74,13 +67,13 @@ function generateData() {
   addTemperature(new Date().toLocaleTimeString(), randomTemperature);
 }
 
-form.addEventListener("submit", function addTemperature(time, temperature) {
+function addTemperature(time, temperature) {
   /* Ajoute la valeur en X */
   config.data.labels.push(time);
 
   /* Ajoute la valeur */
-  /* config.data.datasets[0].data.push(temperature);*/
+  config.data.datasets[0].data.push(temperature);
 
   /* Rafraichir le graphique */
   chart.update();
-});
+}

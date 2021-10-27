@@ -12,7 +12,7 @@ const soldes = [0]; // le tableau des constantes soldes pour le graphique
 const form = document.querySelector("#operationForm");
 let msg = document.querySelector("#msg");
 const operations = [];
-
+let operation = {};
 
 /************************************************************************************************
  ******** déclaration de la fonction qui recuper et stocke les données de mon formulaire ********
@@ -21,53 +21,50 @@ form.addEventListener("submit", function (event) {
   event.preventDefault();
   
   //tableau d'opération qui collecte lesdonnées de chaque opération
-  const operation = {
-    operator: (operator = document.querySelector("#operator").value),
-    titre: (titre = document.querySelector("#titre").value),
-    descr: (descr = document.querySelector("#desc").value),
-    montant: (montant = document.querySelector("#montant").value),
+  operation = {
+    operator: document.querySelector("#operator").value,
+    titre: document.querySelector("#titre").value,
+    desc: document.querySelector("#desc").value,
+    montant: document.querySelector("#montant").value,
   };
   
   // le tableau operation est envoyé dans le tableau des oprérations
   operations.push(operation);
   // j'appelle la fonction structureOperation qui va traiter les données des opérations 
-  structureOperation(operations);
-
-  /******************enregistrement des opeartions dans localStorage ****************************/
-  
-  // Declaration de la variable "operationsEnregistreDansLocaStorage" dans laquelle on met les key et les values qui sont dans localStorage
-  let operationsEnregistreDansLocaStorage = JSON.parse(
-    localStorage.getItem("opes")
-    );
-  
-  // Fonction ajoutée une opération dans localStorage
-  const ajoutOperationLocalStorage = () => {
-    operationsEnregistreDansLocaStorage.push(operation);
-    //la transformation au format JSON et l'envoyer dans la key opes du localStorage
-    localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
-  };
-  
-  // si il y a des operations dans localStorage
-  if (operationsEnregistreDansLocaStorage) {
-    ajoutOperationLocalStorage();
-  }
-  //si il n'ya pas d'operation dans localStorage
-  else {
-    operationsEnregistreDansLocaStorage = [];
-    ajoutOperationLocalStorage();
-  }
-  
+  structureOperation(operation);  
 });
 
-  /***********affichage des opes localStorage ********************************************/
-  // for(index = 0; index <  operationsEnregistreDansLocaStorage.length; index ++) {
-  //   /* je dois lire chaque opes dans structureOperation(); */
-  // }
+/******************enregistrement des opeartions dans localStorage ****************************/
+// Declaration de la variable "operationsEnregistreDansLocaStorage" dans laquelle on met les key et les values qui sont dans localStorage
+let operationsEnregistreDansLocaStorage = JSON.parse(
+  localStorage.getItem("opes")
+);
+form.addEventListener("submit", function (event){
+
+// si il y a des operations dans localStorage
+if (operationsEnregistreDansLocaStorage) {
+  operationsEnregistreDansLocaStorage.push(operation);
+  //la transformation au format JSON et l'envoyer dans la key opes du localStorage
+  localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
+}
+//si il n'ya pas d'operation dans localStorage
+else {
+  operationsEnregistreDansLocaStorage = [];
+  operationsEnregistreDansLocaStorage.push(operation);
+  //la transformation au format JSON et l'envoyer dans la key opes du localStorage
+  localStorage.setItem("opes", JSON.stringify(operationsEnregistreDansLocaStorage));
+  }
+});
+
+for(let i = 0; i < operationsEnregistreDansLocaStorage.length; i++){
+  let pastOp=(operationsEnregistreDansLocaStorage[i]);
+  structureOperation(pastOp);
+}
 
   /***********************************************************************************************
    **************** fonction qui va traiter les données des opérations ***************************
    **********************************************************************************************/
-function structureOperation(operations) {
+function structureOperation(operation) {
   
   //la grille qui contient toutes les operations
   let grid = document.querySelector("#grid");
@@ -76,7 +73,7 @@ function structureOperation(operations) {
   let newDiv = document.createElement("div");
   newDiv.className = "operation";
   grid.appendChild(newDiv);
-  if (operator == "credit") {
+  if (operation.operator == "credit") {
     newDiv.className += " credit";
   } else {
     newDiv.className += " debit";
@@ -97,10 +94,10 @@ function structureOperation(operations) {
   let img = document.createElement("img");
   picto.appendChild(img);
   // image selon debit credit
-  if (operator == "credit") {
+  if (operation.operator == "credit") {
     img.src = "./assets/images/sac-dargent.png";
     img.alt = "credit";
-  } else if (operator == "debit") {
+  } else if (operation.operator == "debit") {
     img.src = "./assets/images/depenses.png";
     img.alt = "dedit";
   }
@@ -115,11 +112,12 @@ function structureOperation(operations) {
   
   let titreOpe = document.createElement("h2");
   libele.appendChild(titreOpe);
-  titreOpe.innerText = titre; //titre de l'operation
+  titreOpe.innerText = operation.titre; //titre de l'operation
   
   let descOpe = document.createElement("small");
   libele.appendChild(descOpe);
-  descOpe.innerText = descr; // description de l'operation
+  // description de l'operation
+  descOpe.innerText = operation.desc; 
   
   let smallCell = document.createElement("div");
   smallCell.className = "cell small-3 text-right";
@@ -131,7 +129,7 @@ function structureOperation(operations) {
   let newP = document.createElement("p");
   newP.className = "count";
   newDivM.appendChild(newP);
-  newP.innerText = `${montant} €`; //montant de l'operation
+  newP.innerText = `${operation.montant} €`; //montant de l'operation
   
   let percent = document.createElement("small"); // element pourcentage de l'operation par rapport au solde
   newDivM.appendChild(percent);
@@ -143,14 +141,14 @@ function structureOperation(operations) {
   if (solde == 0) {
     percent.innerText = "100%";
   } else {
-    percent.innerText = Math.round((montant * 10000) / solde) / 100 + "%";
+    percent.innerText = Math.round((operation.montant * 10000) / solde) / 100 + "%";
   }
   
   /************************************définir le dernier solde***********************************/
-  if (operator == "credit") {
-    solde += parseFloat(montant);
+  if (operation.operator == "credit") {
+    solde += parseFloat(operation.montant);
   } else {
-    solde -= parseFloat(montant);
+    solde -= parseFloat(operation.montant);
   }
   document.querySelector("#solde").innerText = solde;
   
